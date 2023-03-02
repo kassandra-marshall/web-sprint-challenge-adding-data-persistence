@@ -5,7 +5,7 @@ const Projects = require('./model')
 const router = express.Router()
 
 router.get('/',  (req, res, next) => {
-    Projects.getAll(req.params.id)
+    Projects.getAll()
         .then(projects => {
             res.json(projects)
         })
