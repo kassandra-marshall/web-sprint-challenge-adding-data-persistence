@@ -13,11 +13,17 @@ router.get('/',  (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    Projects.postNew(req.body)
+    const { project_name, project_description } = req.body;
+    if (project_name === undefined || project_description === undefined){
+        next({ status: 400, message: 'missing required information'})
+    } else {
+        Projects.postNew(req.body)
         .then(project => {
             res.status(201).json(project)
         })
         .catch(next)
+    }
+    
 })
 
 router.use((error, req, res, next) => { // eslint-disable-line
