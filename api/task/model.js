@@ -13,11 +13,30 @@ async function getAll() {
             'p.project_name',
             'p.project_description'
         )
-    return tasksRows
+        const result = []
+        tasksRows.forEach(row => {
+            if(row.task_id){
+                result.push({
+                   task_completed: !!row.task_completed,
+                   task_description: row.task_description,
+                   task_notes: row.task_notes,
+                   task_id: row.task_id,
+                   project_name: row.project_name,
+                   project_description: row.project_description 
+                })
+            }
+        });
+
+        // const result ={
+        //     task_completed: !!tasksRows.task_completed,
+        //     task_description: tasksRows.task_description,
+        //     task_notes: tasksRows.task_notes
+        // }
+    return result
 }
 
-function postNew(task) {
-    return db('tasks').insert({ ...task })
+async function postNew(task) {
+    const newTask = await db('tasks').insert({ ...task })
         .then(([id]) => {
             return db('tasks').where('task_id', id).first()
         })
@@ -43,6 +62,12 @@ function postNew(task) {
     // }
     // return result
     // {"task_id":1,"task_description":"baz","task_notes":null,"task_completed":false,"project_id:1}
+    const result = {
+        task_completed: !!newTask.task_completed,
+        task_description: newTask.task_description,
+        task_notes: newTask.task_notes
+    }
+    return result
 }
 
 module.exports = {

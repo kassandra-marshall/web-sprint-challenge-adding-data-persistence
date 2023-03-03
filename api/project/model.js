@@ -38,9 +38,8 @@ async function getById(id) {
 
 async function postNew(project) {
     const newProject = await db('projects').insert({ ...project})
-        .then(([id]) => {
-            // return getById(id)
-            // const projectById = getById(id) // calling async function
+        .then(async ([id]) => {
+            // const projectById = await getById(id) // calling async function
             // const result = {
             //     project_id: projectById.project_id,
             //     project_name: projectById.project_name,
@@ -60,7 +59,12 @@ async function postNew(project) {
             // return result
         })
         .catch(error => console.log(error))
-    return ('newProject', newProject)
+        const result = {
+            project_completed: !!newProject.project_completed,
+            project_description: newProject.project_description,
+            project_name: newProject.project_name
+        }
+    return (result)
 }
 
 module.exports = {
