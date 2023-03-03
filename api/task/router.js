@@ -1,6 +1,7 @@
 // build your `/api/tasks` router here
 const express = require('express');
 const Tasks = require('./model');
+const { verifyPost, verifyProject } = require('./middleware')
 
 const router = express.Router()
 
@@ -12,7 +13,7 @@ router.get('/', (req, res, next) => {
         .catch(next)
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', verifyProject, verifyPost, (req, res, next) => {
     Tasks.postNew(req.body)
         .then(tasks => {
             res.status(201).json(tasks)

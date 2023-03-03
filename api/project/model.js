@@ -39,7 +39,15 @@ async function getById(id) {
 async function postNew(project) {
     const newProject = await db('projects').insert({ ...project})
         .then(([id]) => {
-            // doesn't add project once I added conditional logic to router method
+            // return getById(id)
+            // const projectById = getById(id) // calling async function
+            // const result = {
+            //     project_id: projectById.project_id,
+            //     project_name: projectById.project_name,
+            //     project_description: projectById.project_description,
+            //     project_completed: !!projectById.project_completed
+            // }
+            // return ('result', result)
             return db('projects').where('project_id', id).first()
             // only returns boolean
             // const projectPost = db('projects').where('project_id', id).first()
@@ -52,7 +60,7 @@ async function postNew(project) {
             // return result
         })
         .catch(error => console.log(error))
-    return newProject
+    return ('newProject', newProject)
 }
 
 module.exports = {
