@@ -1,6 +1,7 @@
 // build your `/api/resources` router here
 const express = require('express');
 const Resources = require('./model');
+const { verifyName } = require('./middleware')
 
 const router = express.Router()
 
@@ -12,12 +13,19 @@ router.get('/', (req, res, next) => {
         .catch(next)
 })
 
-router.post('/', (req, res, next) => {
-    Resources.postNew(req.body)
+router.post('/', verifyName, (req, res, next) => {
+    // const { resource_name } = req.body
+    // const verifyName = Resources.checkName(resource_name)
+    // if (verifyName === undefined){
+        Resources.postNew(req.body)
         .then(project => {
             res.status(201).json(project)
         })
         .catch(next)
+    // } else {
+    //     next({ status:400, message: 'resource name already exists' })
+    // }
+    
 })
 
 router.use((error, req, res, next) => { // eslint-disable-line

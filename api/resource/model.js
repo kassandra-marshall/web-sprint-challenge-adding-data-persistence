@@ -6,6 +6,11 @@ async function getAll() {
     return resourcesRows
 }
 
+async function checkName(resource_name) {
+    const verifiedName = await db('resources').where('resource_name', resource_name).first()
+    return verifiedName
+}
+
 function postNew(resource) {
     return db('resources').insert({ ...resource})
         .then(([id]) => {
@@ -16,5 +21,6 @@ function postNew(resource) {
 
 module.exports = {
     getAll,
+    checkName,
     postNew
 }
