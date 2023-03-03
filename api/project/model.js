@@ -25,6 +25,17 @@ async function getAll() {
     return newArr
 }
 
+async function getById(id) {
+    const project = await db('projects').where('project_id', id)
+    const result = {
+        project_id: project.project_id,
+                project_name: project.project_name,
+                project_description: project.project_description,
+                project_completed: !!project.project_completed
+    }
+    return result
+}
+
 async function postNew(project) {
     const newProject = await db('projects').insert({ ...project})
         .then(([id]) => {
@@ -46,5 +57,6 @@ async function postNew(project) {
 
 module.exports = {
     getAll,
+    getById,
     postNew
 }

@@ -13,8 +13,8 @@ router.get('/',  (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    const { project_name, project_description } = req.body;
-    if (project_name === undefined || project_description === undefined){
+    const { project_name } = req.body;
+    if (project_name === undefined){
         next({ status: 400, message: 'missing required information'})
     } else {
         Projects.postNew(req.body)
